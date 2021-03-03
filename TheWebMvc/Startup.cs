@@ -33,21 +33,21 @@ namespace TheWebMvc
                 options.DefaultScheme = "Cookies";
                 options.DefaultChallengeScheme = "oidc";
             })
-            .AddCookie("Cookies")
-            .AddOpenIdConnect("oidc", options =>
-            {
-                options.Authority = "https://auidp.azurewebsites.net";
+                .AddCookie("Cookies")
+                .AddOpenIdConnect("oidc", options =>
+                {
+                    options.Authority = "https://localhost:5001";
 
-                options.ClientId = "mvc";
-                options.ClientSecret = "secret";
-                options.ResponseType = "code";
+                    options.ClientId = "mvc";
+                    options.ClientSecret = "secret";
+                    options.ResponseType = "code";
 
-                options.SaveTokens = true;
+                    options.SaveTokens = true;
 
-                options.Scope.Add("api1");
-                options.Scope.Add("mana3rd");
-                options.Scope.Add("offline_access");
-            });
+                    options.Scope.Add("api1");
+                    options.Scope.Add("mana3rd");
+                    options.Scope.Add("offline_access");
+                });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

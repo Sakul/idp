@@ -1,4 +1,4 @@
-// Copyright (c) Brock Allen & Dominick Baier. All rights reserved.
+﻿// Copyright (c) Brock Allen & Dominick Baier. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 
@@ -222,11 +222,30 @@ namespace IdentityServerHost.Quickstart.UI
             }
         }
 
-        [HttpGet("{id}")]
+        [HttpPut("{id}")]
         [AllowAnonymous]
-        public IActionResult CompleteSession(string id)
+        public IActionResult UpdateSession(string id)
         {
-            return Content($"nanana: {id}");
+            switch (id)
+            {
+                case "flow1":
+                    // Login สำเร็จ
+                    // Sign
+                    // SignalR + Tokens
+                    break;
+                case "flow2":
+                    // ให้เลือก BA
+                    // SignalR + BAs
+                    break;
+                case "flow3":
+                    // Login ไม่สำเร็จ
+                    // SignalR + ErrorMsg
+                    break;
+                default:
+                    return BadRequest();
+            }
+
+            return Ok();
         }
 
         /// <summary>

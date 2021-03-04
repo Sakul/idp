@@ -6,9 +6,11 @@ using IdentityServer4;
 using IdentityServerHost.Quickstart.UI;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using TheAuthIdp.Hubs;
 
 namespace TheAuthIdp
 {
@@ -58,6 +60,8 @@ namespace TheAuthIdp
                     options.ClientId = "copy client ID from Google here";
                     options.ClientSecret = "copy client secret from Google here";
                 });
+            services.AddSignalR()
+                .AddAzureSignalR();
         }
 
         public void Configure(IApplicationBuilder app)
@@ -69,12 +73,21 @@ namespace TheAuthIdp
 
             app.UseStaticFiles();
 
+            app.UseCors(builder => builder
+                .SetIsOriginAllowed(it => true)
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                .AllowCredentials());
+
+            app.UseCors("CorsPolicy");
+
             app.UseRouting();
             app.UseIdentityServer();
             app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapDefaultControllerRoute();
+                endpoints.MapHub<SendStatusHub>("/sendstatus");
             });
         }
     }

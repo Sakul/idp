@@ -230,8 +230,9 @@ namespace IdentityServerHost.Quickstart.UI
 
         [HttpPut("{id}")]
         [AllowAnonymous]
-        public IActionResult UpdateSession(string id)
+        public async Task< IActionResult> UpdateSession(string id)
         {
+            await _hubContext.Clients.All.SendAsync("ReceiveMessage", $"Hi: {id}");
             switch (id)
             {
                 case "flow1":
@@ -254,12 +255,12 @@ namespace IdentityServerHost.Quickstart.UI
             return Ok();
         }
 
-        [HttpGet("test")]
+        [HttpGet("test/{signalRconnectionId}")]
         [AllowAnonymous]
         public async Task<IActionResult> sendStatus(string signalRconnectionId)
         {
-            //await _hubContext.Clients.Client(signalRconnectionId).SendAsync("ReceiveMessage", $"Hi {signalRconnectionId}");
-            await _hubContext.Clients.All.SendAsync("ReceiveMessage", "Hi");
+            await _hubContext.Clients.Client(signalRconnectionId).SendAsync("ReceiveMessage", $"Hi {signalRconnectionId}");
+            //await _hubContext.Clients.All.SendAsync("ReceiveMessage", "Hi");
             return Ok();
         }
 

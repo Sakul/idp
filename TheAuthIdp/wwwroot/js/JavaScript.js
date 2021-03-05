@@ -3,7 +3,7 @@
 var connection = new signalR.HubConnectionBuilder().withUrl("/sendstatus",{ accessTokenFactory: () => this.loginToken }).build();
 
 document.getElementById("mybut").disabled = true;
-``
+
 connection.on("ReceiveMessage", function (message) {
     var msg = message.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
     var encodedMsg = msg;
@@ -11,7 +11,7 @@ connection.on("ReceiveMessage", function (message) {
     li.textContent = encodedMsg;
     if (encodedMsg != null) {
         alert(encodedMsg);
-        console.log("complete");
+        console.log(encodedMsg);
     }
     else {
         alert("Something wrong. ");
@@ -21,6 +21,11 @@ connection.on("ReceiveMessage", function (message) {
 });
 connection.start().then(function () {
     document.getElementById("mybut").disabled = false;
+    connection.invoke('getConnectionId')
+        .then(function (connectionId) {
+            console.log("connectionID : " + connectionId);
+            $("#signalRconnectionId").attr("value", connectionId);
+        });
 }).catch(function (err) {
     return console.error(err.toString());
 });

@@ -256,10 +256,11 @@ namespace IdentityServerHost.Quickstart.UI
 
         [HttpGet("test")]
         [AllowAnonymous]
-        public async Task<IActionResult> xxxx()
+        public async Task<IActionResult> sendStatus(string signalRconnectionId)
         {
+            //await _hubContext.Clients.Client(signalRconnectionId).SendAsync("ReceiveMessage", $"Hi {signalRconnectionId}");
             await _hubContext.Clients.All.SendAsync("ReceiveMessage", "Hi");
-            return Content("xxxxx");
+            return Ok();
         }
 
         /// <summary>

@@ -8,6 +8,9 @@ namespace TheAuthIdp.Hubs
 {
     public class SendStatusHub : Hub
     {
-
+        public string GetConnectionId()
+        {
+            return Context.ConnectionId;
+        }
     }
 }

@@ -69,14 +69,16 @@ namespace TheAuthIdp
                     RedirectUris = 
                     {
                         "https://localhost:44364/signin-oidc",
-                        "https://sandapim.azurewebsites.net/signin-oidc"
+                        "https://aumvc.azurewebsites.net/signin-oidc",
+                        "https://sandapim.azurewebsites.net/signin-oidc",
                     },
 
                     // where to redirect to after logout
                     PostLogoutRedirectUris = 
                     { 
                         "https://localhost:44364/signout-callback-oidc",
-                        "https://sandapim.azurewebsites.net/signout-callback-oidc"
+                        "https://aumvc.azurewebsites.net/signout-callback-oidc",
+                        "https://sandapim.azurewebsites.net/signout-callback-oidc",
                     },
 
                     AllowOfflineAccess = true,

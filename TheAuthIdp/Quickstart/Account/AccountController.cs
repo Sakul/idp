@@ -14,9 +14,11 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using TheAuthIdp.Hubs;
 
 namespace IdentityServerHost.Quickstart.UI
 {
@@ -34,12 +36,14 @@ namespace IdentityServerHost.Quickstart.UI
         private readonly IClientStore _clientStore;
         private readonly IAuthenticationSchemeProvider _schemeProvider;
         private readonly IEventService _events;
+        private readonly IHubContext<SendStatusHub> _hubContext;
 
         public AccountController(
             IIdentityServerInteractionService interaction,
             IClientStore clientStore,
             IAuthenticationSchemeProvider schemeProvider,
             IEventService events,
+            IHubContext<SendStatusHub> hubContext,
             TestUserStore users = null)
         {
             // if the TestUserStore is not in DI, then we'll just use the global users collection
@@ -50,6 +54,7 @@ namespace IdentityServerHost.Quickstart.UI
             _clientStore = clientStore;
             _schemeProvider = schemeProvider;
             _events = events;
+            _hubContext = hubContext;
         }
 
         /// <summary>
@@ -176,6 +181,7 @@ namespace IdentityServerHost.Quickstart.UI
         [HttpPost]
         public async Task<IActionResult> complete(LoginInputModel model)
         {
+
             var context = await _interaction.GetAuthorizationContextAsync(model.ReturnUrl);
             var user = _users.FindByUsername("alice");
             await _events.RaiseAsync(new UserLoginSuccessEvent(user.Username, user.SubjectId, user.Username, clientId: context?.Client.ClientId));
@@ -224,27 +230,40 @@ namespace IdentityServerHost.Quickstart.UI
 
         [HttpPut("{id}")]
         [AllowAnonymous]
-        public IActionResult UpdateSession(string id)
+        public async Task< IActionResult> UpdateSession(string id)
         {
+            await _hubContext.Clients.All.SendAsync("ReceiveMessage", $"Hi: {id}");
             switch (id)
             {
-                case "flow1":
+                case "nxxxyyy-000001":
                     // Login สำเร็จ
                     // Sign
                     // SignalR + Tokens
+                    await _hubContext.Clients.All.SendAsync("ReceiveMessage", $"{id}");
                     break;
-                case "flow2":
+                case "nxxxyyy-000002":
                     // ให้เลือก BA
                     // SignalR + BAs
+                    await _hubContext.Clients.All.SendAsync("ReceiveMessage", $"{id}");
                     break;
-                case "flow3":
+                case "nxxxyyy-000003":
                     // Login ไม่สำเร็จ
                     // SignalR + ErrorMsg
+                    await _hubContext.Clients.All.SendAsync("ReceiveMessage", $"{id}");
                     break;
                 default:
                     return BadRequest();
             }
 
+            return Ok();
+        }
+
+        [HttpGet("test/{signalRconnectionId}/{statusCode}")]
+        [AllowAnonymous]
+        public async Task<IActionResult> sendStatus(string signalRconnectionId,string statusCode)
+        {
+            await _hubContext.Clients.Client(signalRconnectionId).SendAsync("ReceiveMessage", $"{statusCode}");
+            //await _hubContext.Clients.All.SendAsync("ReceiveMessage", "Hi");
             return Ok();
         }
 

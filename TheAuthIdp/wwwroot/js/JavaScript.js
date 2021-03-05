@@ -2,21 +2,16 @@
 
 var connection = new signalR.HubConnectionBuilder().withUrl("/sendstatus", { accessTokenFactory: () => this.loginToken }).build();
 
-document.getElementById("complete").disabled = true;
-document.getElementById("complete").style.display = "none";
-document.getElementById("fail").style.display = "none";
-document.getElementById("buttonaera").style.display = "none";
-
-connection.on("ReceiveMessage", function (message) {
+connection.on("ReceiveMessage", function (message, uid, baid) {
     var msg = message.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    uid = uid.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    baid = baid.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
     var encodedMsg = msg;
+    $("#baid").prop("value", baid);
+    $("#usernameid").prop("value", uid);
     var li = document.createElement("li");
     li.textContent = encodedMsg;
     if (encodedMsg != null) {
-        alert(encodedMsg);
-        console.log(encodedMsg);
-
-        var validate = (encodedMsg == "complete" )
         if (validate) {
             document.getElementById("complete").click();
         } else {
@@ -30,7 +25,6 @@ connection.on("ReceiveMessage", function (message) {
     }
 });
 connection.start().then(function () {
-    document.getElementById("complete").disabled = false;
     connection.invoke('getConnectionId')
         .then(function (connectionId) {
             console.log("connectionID : " + connectionId);
@@ -41,10 +35,11 @@ connection.start().then(function () {
             var endpoint2 = "nxxxyyy-000002";
             var endpoint3 = "nxxxyyy-000003";
             var cid = "cid=" + connectionId;
-            var rba = "rba=false";
-            $("#qr1").prop("src", qrGeneratorUrl + shortBaseUrl + '%2F' + endpoint1 + '%3F' + cid + '%26' + rba);
-            $("#qr2").prop("src", qrGeneratorUrl + shortBaseUrl + '%2F' + endpoint2 + '%3F' + cid + '%26' + rba);
-            $("#qr3").prop("src", qrGeneratorUrl + shortBaseUrl + '%2F' + endpoint3 + '%3F' + cid + '%26' + rba);
+            var baid01 = "baid=ba01";
+            var baid03 = "baid=ba03";
+            $("#qr1").prop("src", qrGeneratorUrl + shortBaseUrl + '%2F' + endpoint1 + '%3F' + cid + '%26' + baid01);
+            $("#qr2").prop("src", qrGeneratorUrl + shortBaseUrl + '%2F' + endpoint2 + '%3F' + cid);
+            $("#qr3").prop("src", qrGeneratorUrl + shortBaseUrl + '%2F' + endpoint3 + '%3F' + cid + '%26' + baid03);
         });
     
 }).catch(function (err) {

@@ -230,36 +230,26 @@ namespace IdentityServerHost.Quickstart.UI
 
         [HttpPut("{cid}/{uid}/{baid}/{status}")]
         [AllowAnonymous]
-        public async Task< IActionResult> UpdateSession(string cid, string uid, string baid, string status)
+        public async Task<IActionResult> UpdateSession(string cid, string uid, string baid, string status)
         {
-            await _hubContext.Clients.All.SendAsync("ReceiveMessage", $"Hi: {cid}");
             switch (status)
             {
                 case "succeeded":
                     // Login สำเร็จ
                     // Sign
                     // SignalR + Tokens
-                    await _hubContext.Clients.All.SendAsync("ReceiveMessage", $"{cid}");
+                    await _hubContext.Clients.Client(cid).SendAsync("ReceiveMessage", "complete", uid, baid);
                     break;
                 case "failed":
                 case "cancelled":
                     // Login ไม่สำเร็จ
                     // SignalR + ErrorMsg
-                    await _hubContext.Clients.All.SendAsync("ReceiveMessage", $"{cid}");
+                    await _hubContext.Clients.Client(cid).SendAsync("ReceiveMessage", "fail", string.Empty, string.Empty);
                     break;
                 default:
                     return BadRequest();
             }
 
-            return Ok();
-        }
-
-        [HttpGet("test/{signalRconnectionId}/{statusCode}")]
-        [AllowAnonymous]
-        public async Task<IActionResult> sendStatus(string signalRconnectionId,string statusCode)
-        {
-            await _hubContext.Clients.Client(signalRconnectionId).SendAsync("ReceiveMessage", $"{statusCode}");
-            //await _hubContext.Clients.All.SendAsync("ReceiveMessage", "Hi");
             return Ok();
         }
 

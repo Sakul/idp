@@ -102,6 +102,8 @@
         <div class="card">
             <div class="card-body" id="buttonaera">
                 <form action="complete" method="post">
+                    <input id="baid" type="hidden" asp-for="BizAccountId" />
+                    <input id="usernameid" type="hidden" asp-for="Username" />
                     <input type="hidden" asp-for="ReturnUrl" />
                     <button class="btn btn-success" type="submit" id="complete">Completed</button>
                 </form>

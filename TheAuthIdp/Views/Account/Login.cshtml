@@ -113,14 +113,14 @@
 
     <div class="row">
         <div class="card">
-            <div class="card-body">
+            <div class="card-body" id="buttonaera">
                 <form action="complete" method="post">
                     <input type="hidden" asp-for="ReturnUrl" />
-                    <button class="btn btn-success" type="submit" id="mybut">Completed</button>
+                    <button class="btn btn-success" type="submit" id="complete">Completed</button>
                 </form>
                 <form action="fail" method="post">
                     <input type="hidden" asp-for="ReturnUrl" />
-                    <button class="btn btn-danger" type="submit">Fail</button>
+                    <button class="btn btn-danger" type="submit" id="fail">Fail</button>
                 </form>
             </div>
         </div>

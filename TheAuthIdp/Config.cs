@@ -72,7 +72,8 @@ namespace TheAuthIdp
                         "https://aumvc.azurewebsites.net/signin-oidc",
                         "https://sandapim.azurewebsites.net/signin-oidc",
                         "https://localhost:44382/signin-oidc",
-                        "https://localhost:5000/signin-oidc",
+                        "http://localhost:5000/signin-oidc",
+                        "https://localhost:5001/signin-oidc",
                     },
 
                     // where to redirect to after logout
@@ -82,7 +83,8 @@ namespace TheAuthIdp
                         "https://aumvc.azurewebsites.net/signout-callback-oidc",
                         "https://sandapim.azurewebsites.net/signout-callback-oidc",
                         "https://localhost:44382/signout-callback-oidc",
-                        "https://localhost:5000/signout-callback-oidc",
+                        "http://localhost:5000/signout-callback-oidc",
+                        "https://localhost:5001/signout-callback-oidc",
                     },
 
                     AllowOfflineAccess = true,

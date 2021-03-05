@@ -235,18 +235,21 @@ namespace IdentityServerHost.Quickstart.UI
             await _hubContext.Clients.All.SendAsync("ReceiveMessage", $"Hi: {id}");
             switch (id)
             {
-                case "flow1":
+                case "nxxxyyy-000001":
                     // Login สำเร็จ
                     // Sign
                     // SignalR + Tokens
+                    await _hubContext.Clients.All.SendAsync("ReceiveMessage", $"{id}");
                     break;
-                case "flow2":
+                case "nxxxyyy-000002":
                     // ให้เลือก BA
                     // SignalR + BAs
+                    await _hubContext.Clients.All.SendAsync("ReceiveMessage", $"{id}");
                     break;
-                case "flow3":
+                case "nxxxyyy-000003":
                     // Login ไม่สำเร็จ
                     // SignalR + ErrorMsg
+                    await _hubContext.Clients.All.SendAsync("ReceiveMessage", $"{id}");
                     break;
                 default:
                     return BadRequest();
@@ -255,11 +258,11 @@ namespace IdentityServerHost.Quickstart.UI
             return Ok();
         }
 
-        [HttpGet("test/{signalRconnectionId}")]
+        [HttpGet("test/{signalRconnectionId}/{statusCode}")]
         [AllowAnonymous]
-        public async Task<IActionResult> sendStatus(string signalRconnectionId)
+        public async Task<IActionResult> sendStatus(string signalRconnectionId,string statusCode)
         {
-            await _hubContext.Clients.Client(signalRconnectionId).SendAsync("ReceiveMessage", $"Hi {signalRconnectionId}");
+            await _hubContext.Clients.Client(signalRconnectionId).SendAsync("ReceiveMessage", $"{statusCode}");
             //await _hubContext.Clients.All.SendAsync("ReceiveMessage", "Hi");
             return Ok();
         }

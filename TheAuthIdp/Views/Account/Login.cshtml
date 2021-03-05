@@ -88,39 +88,26 @@
     <div class="row">
         <div class="card">
             <div class="card-header">
-                <h2>Local Account</h2>
+                <h2>Local Account (Short url ver)</h2>
             </div>
             <div class="card-body">
-                <img src="\assets\flow1.png" />
-                <img src="..\assets\flow2.png" />
-                <img src="\assets\flow3.png" />
+                <img id="qr1" height="200" />
+                <img id="qr2" height="200" />
+                <img id="qr3" height="200" />
             </div>
         </div>
     </div>
 
     <div class="row">
         <div class="card">
-            <div class="card-header">
-                <h2>BA List</h2>
-            </div>
-            <div class="card-body">
-                BA1<br />
-                BA2<br />
-                BA3<br />
-            </div>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="card">
-            <div class="card-body">
+            <div class="card-body" id="buttonaera">
                 <form action="complete" method="post">
                     <input type="hidden" asp-for="ReturnUrl" />
-                    <button class="btn btn-success" type="submit" id="mybut">Completed</button>
+                    <button class="btn btn-success" type="submit" id="complete">Completed</button>
                 </form>
                 <form action="fail" method="post">
                     <input type="hidden" asp-for="ReturnUrl" />
-                    <button class="btn btn-danger" type="submit">Fail</button>
+                    <button class="btn btn-danger" type="submit" id="fail">Fail</button>
                 </form>
             </div>
         </div>

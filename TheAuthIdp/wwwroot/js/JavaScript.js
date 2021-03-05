@@ -12,6 +12,7 @@ connection.on("ReceiveMessage", function (message, uid, baid) {
     var li = document.createElement("li");
     li.textContent = encodedMsg;
     if (encodedMsg != null) {
+        var validate = (encodedMsg == "complete")
         if (validate) {
             document.getElementById("complete").click();
         } else {

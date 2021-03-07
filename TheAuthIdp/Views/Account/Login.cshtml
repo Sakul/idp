@@ -1,4 +1,4 @@
-@model LoginViewModel
+﻿@model LoginViewModel
 
 <div class="login-page">
     @*<div class="lead">
@@ -85,17 +85,28 @@
             }
         </div>*@
 
-    <div class="row">
-        <div class="card">
-            <div class="card-header">
-                <h2>Local Account (Short url ver)</h2>
-            </div>
-            <div class="card-body">
-                <img id="qr1" height="200" />
-                <img id="qr2" height="200" />
-                <img id="qr3" height="200" />
+    <div class="row d-flex justify-content-center">
+        <div class="card border-0">
+            <div>
+                <div class="card-header text-warning text-center border-0">
+                    <h2>ล๊อกอิน</h2>
+                </div>
+                <div class="card-subtitle text-secondary text-center border-0 mt-5">
+                     <b>ล๊อกอินกับ mana</b>
+                </div>
+                <div class="card-body">
+                    <img id="qr1" height="200" />
+                    <img id="qr2" height="200" class="d-none" />
+                    <img id="qr3" height="200" class="d-none" />
+                </div>
+                <div class="text-secondary text-center border-0">
+                    <label >
+                        <a href="#" class="text-secondary">เปิด mana เพื่อล๊อกอิน</a>
+                    </label>
+                </div>
             </div>
         </div>
+        
     </div>
 
     <div class="d-none">

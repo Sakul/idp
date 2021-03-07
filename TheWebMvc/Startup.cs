@@ -36,7 +36,8 @@ namespace TheWebMvc
                 .AddCookie("Cookies")
                 .AddOpenIdConnect("oidc", options =>
                 {
-                    options.Authority = "https://auidp.azurewebsites.net";
+                    //options.Authority = "https://auidp.azurewebsites.net";
+                    options.Authority = "https://localhost:5001";
 
                     options.ClientId = "mvc";
                     options.ClientSecret = "secret";

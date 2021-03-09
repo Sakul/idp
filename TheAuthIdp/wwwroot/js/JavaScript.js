@@ -28,8 +28,10 @@ connection.on("ReceiveMessage", function (message, uid, baid) {
 connection.start().then(function () {
     connection.invoke('getConnectionId')
         .then(function (connectionId) {
-            console.log("connectionID : " + connectionId);
             $("#signalRconnectionId").attr("value", connectionId);
+            var appstorelink = "https://apps.apple.com/th/app/mana/id1273112680";
+            var playstore_deeplink = "market://details?id=thes.mana.client";
+            var playstorelink = "https://play.google.com/store/apps/details?id=thes.mana.client";
             var qrGeneratorUrl = "https://mana-facing-devtesting.azurewebsites.net/qr?t=";
             var shortBaseUrl = "https://s.manal.ink/auth/visit";
             var endpoint1 = "nxxxyyy-000001";
@@ -41,9 +43,35 @@ connection.start().then(function () {
             $("#qr1").prop("src", qrGeneratorUrl + shortBaseUrl + '%2F' + endpoint1 + '%3F' + cid + '%26' + baid01);
             $("#qr2").prop("src", qrGeneratorUrl + shortBaseUrl + '%2F' + endpoint2 + '%3F' + cid);
             $("#qr3").prop("src", qrGeneratorUrl + shortBaseUrl + '%2F' + endpoint3 + '%3F' + cid + '%26' + baid03);
-            $("#universalUri").prop("href", 'https://mlanding.azurewebsites.net?endpoint=' + shortBaseUrl + '%2F' + endpoint1 + '%3F' + cid + '%26' + baid01 +'&callback=openapp')
+
+            if ((/Mobi|Android/i.test(navigator.userAgent)) || /Mobi|iPad|iPhone|iPod/i.test(navigator.userAgent)) {
+                $("#applink").prop("hidden", false);
+                $("#universalUri").click(function () {
+                    var app = {
+                        launchApp: function () {
+                            window.location.href = 'manarising://link?endpoint=' + shortBaseUrl + '%2F' + endpoint1 + '%3F' + cid + '%26' + baid01;
+                            setTimeout(this.openWebApp, 1000);
+                        },
+
+                        openWebApp: function () {
+                            if ((/Mobi|Android/i.test(navigator.userAgent))) {
+                                window.location.href = playstore_deeplink;
+                            }
+                            if (/Mobi|iPad|iPhone|iPod/i.test(navigator.userAgent)) {
+                                window.location.href = appstorelink;
+                            }
+                        }
+                    };
+
+                    app.launchApp();
+                });
+            }
+            else {
+                $("#storelink").prop("hidden", false);
+                $("#playstore").prop("href", playstorelink);
+                $("#appstore").prop("href", appstorelink);
+            }
         });
-    
 }).catch(function (err) {
     return console.error(err.toString());
 });

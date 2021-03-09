@@ -41,6 +41,7 @@ connection.start().then(function () {
             $("#qr1").prop("src", qrGeneratorUrl + shortBaseUrl + '%2F' + endpoint1 + '%3F' + cid + '%26' + baid01);
             $("#qr2").prop("src", qrGeneratorUrl + shortBaseUrl + '%2F' + endpoint2 + '%3F' + cid);
             $("#qr3").prop("src", qrGeneratorUrl + shortBaseUrl + '%2F' + endpoint3 + '%3F' + cid + '%26' + baid03);
+            $("#universalUri").prop("href", 'https://mlanding.azurewebsites.net?endpoint=' + shortBaseUrl + '%2F' + endpoint1 + '%3F' + cid + '%26' + baid01 +'&callback=openapp')
         });
     
 }).catch(function (err) {

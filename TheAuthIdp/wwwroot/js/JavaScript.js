@@ -34,22 +34,18 @@ connection.start().then(function () {
             var playstorelink = "https://play.google.com/store/apps/details?id=thes.mana.client";
             var qrGeneratorUrl = "https://mana-facing-devtesting.azurewebsites.net/qr?t=";
             var shortBaseUrl = "https://s.manal.ink/auth/visit";
-            var endpoint1 = "nxxxyyy-000001";
-            var endpoint2 = "nxxxyyy-000002";
-            var endpoint3 = "nxxxyyy-000003";
+            var endpointId = "nxxxyyy-000001";
             var cid = "cid=" + connectionId;
-            var baid01 = "baid=ba01";
-            var baid03 = "baid=ba03";
-            $("#qr1").prop("src", qrGeneratorUrl + shortBaseUrl + '%2F' + endpoint1 + '%3F' + cid + '%26' + baid01);
-            $("#qr2").prop("src", qrGeneratorUrl + shortBaseUrl + '%2F' + endpoint2 + '%3F' + cid);
-            $("#qr3").prop("src", qrGeneratorUrl + shortBaseUrl + '%2F' + endpoint3 + '%3F' + cid + '%26' + baid03);
+            var svc = "svcid=svc01";
+            var flow = "flow=F01";
+            $("#qr1").prop("src", qrGeneratorUrl + shortBaseUrl + '%2F' + endpointId + '%3F' + cid + '%26' + svc + '%26' + flow);
 
             if ((/Mobi|Android/i.test(navigator.userAgent)) || /Mobi|iPad|iPhone|iPod/i.test(navigator.userAgent)) {
                 $("#applink").prop("hidden", false);
                 $("#universalUri").click(function () {
                     var app = {
                         launchApp: function () {
-                            window.location.href = 'manarising://link?endpoint=' + shortBaseUrl + '%2F' + endpoint1 + '%3F' + cid + '%26' + baid01;
+                            window.location.href = 'manarising://link?endpoint=' + shortBaseUrl + '%2F' + endpointId + '%3F' + cid + '%26' + svc;
                             setTimeout(this.openWebApp, 1000);
                         },
 

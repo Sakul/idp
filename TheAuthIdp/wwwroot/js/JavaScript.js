@@ -41,9 +41,26 @@ connection.start().then(function () {
             $("#qr1").prop("src", qrGeneratorUrl + shortBaseUrl + '%2F' + endpoint1 + '%3F' + cid + '%26' + baid01);
             $("#qr2").prop("src", qrGeneratorUrl + shortBaseUrl + '%2F' + endpoint2 + '%3F' + cid);
             $("#qr3").prop("src", qrGeneratorUrl + shortBaseUrl + '%2F' + endpoint3 + '%3F' + cid + '%26' + baid03);
-            $("#universalUri").prop("href", 'https://mlanding.azurewebsites.net?endpoint=' + shortBaseUrl + '%2F' + endpoint1 + '%3F' + cid + '%26' + baid01 +'&callback=openapp')
+            $("#universalUri").click(function () {
+                var app = {
+                    launchApp: function () {
+                        window.location.href = 'manarising://link?endpoint=' + shortBaseUrl + '%2F' + endpoint1 + '%3F' + cid + '%26' + baid01;
+                        setTimeout(this.openWebApp, 1000);
+                    },
+
+                    openWebApp: function () {
+                        if ((/Mobi|Android/i.test(navigator.userAgent))) {
+                            window.location.href = "market://details?id=thes.mana.client";
+                        }
+                        if (/Mobi|iPad|iPhone|iPod/i.test(navigator.userAgent)) {
+                            window.location.href = "https://apps.apple.com/th/app/mana/id1273112680";
+                        }
+                    }
+                };
+
+                app.launchApp();
+            });
         });
-    
 }).catch(function (err) {
     return console.error(err.toString());
 });

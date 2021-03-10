@@ -228,29 +228,42 @@ namespace IdentityServerHost.Quickstart.UI
             }
         }
 
-        [HttpPut("{cid}/{uid}/{baid}/{status}")]
-        [AllowAnonymous]
-        public async Task<IActionResult> UpdateSession(string cid, string uid, string baid, string status)
+        //[HttpPut("{cid}/{uid}/{baid}/{status}")]
+        //[AllowAnonymous]
+        //public async Task<IActionResult> UpdateSession(string cid, string uid, string baid, string status)
+        [HttpPut]
+        public async Task<IActionResult> UpdateSession([FromBody] UpdateLoginState req)
         {
-            switch (status)
+            switch (req.LoginStatus)
             {
                 case "succeeded":
                     // Login สำเร็จ
                     // Sign
                     // SignalR + Tokens
-                    await _hubContext.Clients.Client(cid).SendAsync("ReceiveMessage", "complete", uid, baid);
+                    await _hubContext.Clients.Client(req.CId).SendAsync("ReceiveMessage", "complete", req.UId, req.BaId);
                     break;
                 case "failed":
                 case "cancelled":
                     // Login ไม่สำเร็จ
                     // SignalR + ErrorMsg
-                    await _hubContext.Clients.Client(cid).SendAsync("ReceiveMessage", "fail", string.Empty, string.Empty);
+                    await _hubContext.Clients.Client(req.CId).SendAsync("ReceiveMessage", "fail", string.Empty, string.Empty);
                     break;
                 default:
                     return BadRequest();
             }
 
             return Ok();
+        }
+
+        public class UpdateLoginState
+        {
+            public string CId { get; set; }
+            public string UId { get; set; }
+            public string BaId { get; set; }
+            public string LoginStatus { get; set; }
+            public string FlowId { get; set; }
+            public string SvcId { get; set; }
+            public bool IsAgree { get; set; }
         }
 
         /// <summary>

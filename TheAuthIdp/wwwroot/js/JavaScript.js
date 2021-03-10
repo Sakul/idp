@@ -34,10 +34,10 @@ connection.start().then(function () {
             var playstorelink = "https://play.google.com/store/apps/details?id=thes.mana.client";
             var qrGeneratorUrl = "https://mana-facing-devtesting.azurewebsites.net/qr?t=";
             var shortBaseUrl = "https://s.manal.ink/auth/visit";
-            var endpointId = "nxxxyyy-000001";
-            var cid = "cid=" + connectionId;
-            var svc = "svcid=svc01";
-            var flow = "flow=F01";
+            var endpointId = "nidplog-000001";
+            var cid = "cId=" + connectionId;
+            var svc = "svcId=svc01";
+            var flow = "flowId=F01";
             $("#qr1").prop("src", qrGeneratorUrl + shortBaseUrl + '%2F' + endpointId + '%3F' + cid + '%26' + svc + '%26' + flow);
 
             if ((/Mobi|Android/i.test(navigator.userAgent)) || /Mobi|iPad|iPhone|iPod/i.test(navigator.userAgent)) {

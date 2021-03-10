@@ -38,14 +38,15 @@ connection.start().then(function () {
             var cid = "cId=" + connectionId;
             var svc = "svcId=svc01";
             var flow = "flowId=F01";
-            $("#qr1").prop("src", qrGeneratorUrl + shortBaseUrl + '%2F' + endpointId + '%3F' + cid + '%26' + svc + '%26' + flow);
+            var endpointParams = endpointId + '%3F' + cid + '%26' + svc + '%26' + flow;
+            $("#qr1").prop("src", qrGeneratorUrl + shortBaseUrl + '%2F' + endpointParams);
 
             if ((/Mobi|Android/i.test(navigator.userAgent)) || /Mobi|iPad|iPhone|iPod/i.test(navigator.userAgent)) {
                 $("#applink").prop("hidden", false);
                 $("#universalUri").click(function () {
                     var app = {
                         launchApp: function () {
-                            window.location.href = 'manarising://link?endpoint=' + shortBaseUrl + '%2F' + endpointId + '%3F' + cid + '%26' + svc;
+                            window.location.href = 'manarising://link?endpoint=' + shortBaseUrl + '%2F' + endpointParams;
                             setTimeout(this.openWebApp, 1000);
                         },
 

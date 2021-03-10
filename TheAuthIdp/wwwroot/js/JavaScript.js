@@ -33,7 +33,7 @@ connection.start().then(function () {
             var playstore_deeplink = "market://details?id=thes.mana.client";
             var playstorelink = "https://play.google.com/store/apps/details?id=thes.mana.client";
             var qrGeneratorUrl = "https://mana-facing-devtesting.azurewebsites.net/qr?t=";
-            var shortBaseUrl = "https://s.manal.ink/auth/visit";
+            var shortBaseUrl = "https://s.manal.ink/np";
             var endpointId = "nidplog-000001";
             var cid = "cId=" + connectionId;
             var svc = "svcId=svc01";

@@ -46,7 +46,6 @@ connection.start().then(function () {
                 $("#universalUri").click(function () {
                     var app = {
                         launchApp: function () {
-                            //window.location.href = 'manarising://link?endpoint=' + shortBaseUrl + '%2F' + endpointParams;
                             window.location.href = 'manarising://link?np=' + endpointParams;
                             setTimeout(this.openWebApp, 1000);
                         },

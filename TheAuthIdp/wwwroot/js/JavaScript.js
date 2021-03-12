@@ -25,6 +25,7 @@ connection.on("ReceiveMessage", function (message, uid, baid) {
 
     }
 });
+
 connection.start().then(function () {
     connection.invoke('getConnectionId')
         .then(function (connectionId) {
@@ -39,7 +40,29 @@ connection.start().then(function () {
             var svc = "svcId=svc01";
             var flow = "flowId=F01";
             var endpointParams = endpointId + '%3F' + cid + '%26' + svc + '%26' + flow;
-            $("#qr1").prop("src", qrGeneratorUrl + shortBaseUrl + '%2F' + endpointParams);
+
+            var svcid = document.getElementById("hide-svcid").textContent;
+            var baid = document.getElementById("hide-baid").textContent;
+            var flowid = document.getElementById("hide-flowid").textContent;
+
+            $("#loading-session").prop("hidden", true);
+            connection.invoke("RequestLoginSessionQRUrl", svcid, baid, flowid, connectionId)
+                .then(function (url) {
+                    $("#login-session-heading").prop("hidden", false);
+                    if (url == "") {
+                        $("#login-session-failed").prop("hidden", false);
+                    }
+                    else {
+                        $("#login-session-success").prop("hidden", false);
+                        $("#qr1").prop("src", url);
+                    }
+                }).catch(function (err) {
+                    console.error(err.toString());
+                });
+
+
+
+            //$("#qr1").prop("src", qrGeneratorUrl + shortBaseUrl + '%2F' + endpointParams);
 
             if ((/Mobi|Android/i.test(navigator.userAgent)) || /Mobi|iPad|iPhone|iPod/i.test(navigator.userAgent)) {
                 $("#applink").prop("hidden", false);
@@ -68,7 +91,10 @@ connection.start().then(function () {
                 $("#playstore").prop("href", playstorelink);
                 $("#appstore").prop("href", appstorelink);
             }
+
         });
 }).catch(function (err) {
     return console.error(err.toString());
 });
+
+

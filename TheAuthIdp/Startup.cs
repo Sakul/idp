@@ -61,7 +61,10 @@ namespace TheAuthIdp
                     options.ClientSecret = "copy client secret from Google here";
                 });
             services.AddSignalR()
-                .AddAzureSignalR();
+                .AddAzureSignalR(options=>
+                {
+                    options.ServerStickyMode = Microsoft.Azure.SignalR.ServerStickyMode.Preferred;
+                });
         }
 
         public void Configure(IApplicationBuilder app)

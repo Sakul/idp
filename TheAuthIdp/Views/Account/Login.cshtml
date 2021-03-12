@@ -88,15 +88,33 @@
     <div class="row d-flex justify-content-center">
         <div class="card border-0">
             <div>
-                <div class="card-subtitle text-secondary text-center border-0 mt-5">
+                <label id="hide-svcid" hidden>@ViewBag.SvcId</label>
+                <label id="hide-flowid" hidden>@ViewBag.FlowId</label>
+                <label id="hide-baid" hidden>@ViewBag.BaId</label>
+
+                <div class="text-center text-danger" id="loading-session">
+                    <div class="spinner-border" role="status">
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                    <br />
+                    <br />
+                    <label>กรุณารอสักครู่...</label>
+                </div>
+
+                <div class="card-subtitle text-secondary text-center border-0 mt-5" id="login-session-heading" hidden>
                     <b>ล๊อกอินกับ mana</b>
                 </div>
-                <div class="card-body text-center">
+
+                <div class="card-body text-center" id="login-session-success" hidden>
                     <img id="qr1" height="200" />
                 </div>
+                <div id="login-session-failed" class="text-center" hidden>
+                    <label class="text-danger">ขออภัย เกิดข้อผิดพลาดกรุณาลองใหม่อีกครั้ง</label>
+                </div>
+
                 <div class="text-center" id="storelink" hidden>
                     <a id="appstore"><img src="~/assets/app-store.png" height="30" alt="App Store"></a>
-                    <a id="playstore"><img style="padding-bottom: 15px;" src="~/assets/google-play.png" height="30" alt="Google Play"></a>
+                    <a id="playstore"><img src="~/assets/google-play.png" height="30" alt="Google Play"></a>
                 </div>
                 <div id="applink" class="text-secondary text-center border-0" hidden>
                     <label>

@@ -15,8 +15,14 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.Extensions.Primitives;
 using System;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using TheAuthIdp.Hubs;
 
@@ -63,6 +69,17 @@ namespace IdentityServerHost.Quickstart.UI
         [HttpGet]
         public async Task<IActionResult> Login(string returnUrl)
         {
+            HttpContext.Request.Query.TryGetValue("svcid", out StringValues svcId);
+            HttpContext.Request.Query.TryGetValue("flowid", out StringValues flowId);
+            HttpContext.Request.Query.TryGetValue("baid", out StringValues baId);
+            //ViewBag.SvcId = svcId;
+            //ViewBag.FlowId = flowId;
+            //ViewBag.BaId = baId;
+
+            ViewBag.SvcId = "svc-mock-id";
+            ViewBag.FlowId = "637510461242060937";
+            ViewBag.BaId = "ba-mock-id";
+
             // build a model so we know what to show on the login page
             var vm = await BuildLoginViewModelAsync(returnUrl);
 
@@ -73,6 +90,39 @@ namespace IdentityServerHost.Quickstart.UI
             }
 
             return View(vm);
+        }
+
+        [HttpGet("qr/{svcId}/{baId}/{flowId}/{cId}")]
+        public async Task<string> GetQr(string svcId, string baId, string flowId, string cId)
+        {
+            var dataTxt = JsonSerializer.Serialize(new { cId, flowId });
+            var requestData = new StringContent(dataTxt, Encoding.UTF8, "application/json");
+
+            var client = new HttpClient();
+            //client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Content-Type", "application/json");
+            var url = $"http://mana-facing-devtesting.azurewebsites.net/Auth3rd/{svcId}/{baId}/loginsession";
+            var content = await client.PostAsync(url, requestData);
+
+            var qrLink = string.Empty;
+            if (content.IsSuccessStatusCode)
+            {
+                var rspTxt = await content.Content.ReadAsStringAsync();
+                var rsp = JsonSerializer.Deserialize<LoginSessionResponse>(rspTxt);
+                qrLink = rsp.Url;
+            }
+
+            return qrLink;
+            //else
+            //{
+            //    ViewBag.ErrorMsg = "ข้อมูลในการขอเข้าสู่ระบบไม่ถูกต้อง";
+            //}
+
+            // TODO: Hub(qrLink)
+        }
+
+        public class LoginSessionResponse
+        {
+            public string Url { get; set; }
         }
 
         /// <summary>
@@ -168,7 +218,7 @@ namespace IdentityServerHost.Quickstart.UI
                         throw new Exception("invalid return URL");
                     }
                 }
-                
+
                 await _events.RaiseAsync(new UserLoginFailureEvent(model.Username, "invalid credentials", clientId: context?.Client.ClientId));
                 ModelState.AddModelError(string.Empty, AccountOptions.InvalidCredentialsErrorMessage);
             }
@@ -228,10 +278,7 @@ namespace IdentityServerHost.Quickstart.UI
             }
         }
 
-        //[HttpPut("{cid}/{uid}/{baid}/{status}")]
-        //[AllowAnonymous]
-        //public async Task<IActionResult> UpdateSession(string cid, string uid, string baid, string status)
-        [HttpPut]
+        [HttpPut("update")]
         public async Task<IActionResult> UpdateSession([FromBody] UpdateLoginState req)
         {
             switch (req.LoginStatus)

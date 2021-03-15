@@ -72,13 +72,13 @@ namespace IdentityServerHost.Quickstart.UI
             HttpContext.Request.Query.TryGetValue("svcid", out StringValues svcId);
             HttpContext.Request.Query.TryGetValue("flowid", out StringValues flowId);
             HttpContext.Request.Query.TryGetValue("baid", out StringValues baId);
-            //ViewBag.SvcId = svcId;
-            //ViewBag.FlowId = flowId;
-            //ViewBag.BaId = baId;
+            ViewBag.SvcId = svcId;
+            ViewBag.FlowId = flowId;
+            ViewBag.BaId = baId;
 
-            ViewBag.SvcId = "svc-mock-id";
-            ViewBag.FlowId = "637510461242060937";
-            ViewBag.BaId = "ba-mock-id";
+            //ViewBag.SvcId = "svc-mock-id";
+            //ViewBag.FlowId = "637510461242060937";
+            //ViewBag.BaId = "ba-mock-id";
 
             // build a model so we know what to show on the login page
             var vm = await BuildLoginViewModelAsync(returnUrl);

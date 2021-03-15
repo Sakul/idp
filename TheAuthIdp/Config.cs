@@ -74,6 +74,7 @@ namespace TheAuthIdp
                         "https://localhost:44382/signin-oidc",
                         "http://localhost:5000/signin-oidc",
                         "https://localhost:5001/signin-oidc",
+                        "https://mana-apim-sandbox-test.developer.azure-api.net/signin-oidc"
                     },
 
                     // where to redirect to after logout
@@ -85,6 +86,7 @@ namespace TheAuthIdp
                         "https://localhost:44382/signout-callback-oidc",
                         "http://localhost:5000/signout-callback-oidc",
                         "https://localhost:5001/signout-callback-oidc",
+                        "https://mana-apim-sandbox-test.developer.azure-api.net/signout-callback-oidc"
                     },
 
                     AllowOfflineAccess = true,

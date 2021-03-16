@@ -15,14 +15,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
-using Microsoft.Extensions.Primitives;
 using System;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Text;
-using System.Text.Json;
 using System.Threading.Tasks;
 using TheAuthIdp.Hubs;
 
@@ -241,8 +235,10 @@ namespace IdentityServerHost.Quickstart.UI
         }
 
         [HttpPut("update")]
-        public async Task<IActionResult> UpdateSession([FromBody] UpdateLoginState req)
+        public async Task<ActionResult<LoginResult>> UpdateSession([FromBody] UpdateLoginState req)
         {
+            // TODO: Validate session
+
             switch (req.LoginStatus)
             {
                 case "succeeded":
@@ -253,9 +249,14 @@ namespace IdentityServerHost.Quickstart.UI
                     await _hubContext.Clients.Client(req.CId).SendAsync("LoginStateChanged", "fail", string.Empty, string.Empty);
                     break;
                 default:
-                    return BadRequest();
+                    return new LoginResult();
             }
-            return Ok();
+
+            return new LoginResult
+            {
+                UId = req.UId,
+                IsSucceeded = true,
+            };
         }
 
         public class UpdateLoginState
@@ -267,6 +268,11 @@ namespace IdentityServerHost.Quickstart.UI
             public string FlowId { get; set; }
             public string SvcId { get; set; }
             public bool IsAgree { get; set; }
+        }
+        public class LoginResult
+        {
+            public string UId { get; set; }
+            public bool IsSucceeded { get; set; }
         }
 
         /// <summary>

@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Microsoft.AspNetCore.SignalR;
 using System.Net.Http;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.SignalR;
 
 namespace TheAuthIdp.Hubs
 {
@@ -16,15 +13,13 @@ namespace TheAuthIdp.Hubs
             return Context.ConnectionId;
         }
 
-        public async Task<string> RequestLoginSessionQRUrl(string svcId, string baId, string flowId, string cId)
+        public async Task<string> GetLoginUrl(string svcId, string flowId, string cId)
         {
             var dataTxt = JsonSerializer.Serialize(new { cId, flowId });
-            var requestData = new StringContent(dataTxt, Encoding.UTF8, "application/json");
-
+            var reqBody = new StringContent(dataTxt, Encoding.UTF8, "application/json");
             var client = new HttpClient();
-            //client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Content-Type", "application/json");
-            var url = $"http://mana-facing-devtesting.azurewebsites.net/Auth3rd/{svcId}/{baId}/loginsession";
-            var content = await client.PostAsync(url, requestData);
+            var url = $"http://mana-facing-devtesting.azurewebsites.net/auth3rd/{svcId}/login";
+            var content = await client.PostAsync(url, reqBody);
 
             var qrLink = string.Empty;
             if (content.IsSuccessStatusCode)

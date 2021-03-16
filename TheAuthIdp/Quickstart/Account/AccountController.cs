@@ -71,14 +71,8 @@ namespace IdentityServerHost.Quickstart.UI
         {
             HttpContext.Request.Query.TryGetValue("svcid", out StringValues svcId);
             HttpContext.Request.Query.TryGetValue("flowid", out StringValues flowId);
-            HttpContext.Request.Query.TryGetValue("baid", out StringValues baId);
             ViewBag.SvcId = svcId;
             ViewBag.FlowId = flowId;
-            ViewBag.BaId = baId;
-
-            //ViewBag.SvcId = "svc-mock-id";
-            //ViewBag.FlowId = "637510461242060937";
-            //ViewBag.BaId = "ba-mock-id";
 
             // build a model so we know what to show on the login page
             var vm = await BuildLoginViewModelAsync(returnUrl);
@@ -90,39 +84,6 @@ namespace IdentityServerHost.Quickstart.UI
             }
 
             return View(vm);
-        }
-
-        [HttpGet("qr/{svcId}/{baId}/{flowId}/{cId}")]
-        public async Task<string> GetQr(string svcId, string baId, string flowId, string cId)
-        {
-            var dataTxt = JsonSerializer.Serialize(new { cId, flowId });
-            var requestData = new StringContent(dataTxt, Encoding.UTF8, "application/json");
-
-            var client = new HttpClient();
-            //client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Content-Type", "application/json");
-            var url = $"http://mana-facing-devtesting.azurewebsites.net/Auth3rd/{svcId}/{baId}/loginsession";
-            var content = await client.PostAsync(url, requestData);
-
-            var qrLink = string.Empty;
-            if (content.IsSuccessStatusCode)
-            {
-                var rspTxt = await content.Content.ReadAsStringAsync();
-                var rsp = JsonSerializer.Deserialize<LoginSessionResponse>(rspTxt);
-                qrLink = rsp.Url;
-            }
-
-            return qrLink;
-            //else
-            //{
-            //    ViewBag.ErrorMsg = "ข้อมูลในการขอเข้าสู่ระบบไม่ถูกต้อง";
-            //}
-
-            // TODO: Hub(qrLink)
-        }
-
-        public class LoginSessionResponse
-        {
-            public string Url { get; set; }
         }
 
         /// <summary>
@@ -231,7 +192,6 @@ namespace IdentityServerHost.Quickstart.UI
         [HttpPost]
         public async Task<IActionResult> complete(LoginInputModel model)
         {
-
             var context = await _interaction.GetAuthorizationContextAsync(model.ReturnUrl);
             var user = _users.FindByUsername("alice");
             await _events.RaiseAsync(new UserLoginSuccessEvent(user.Username, user.SubjectId, user.Username, clientId: context?.Client.ClientId));
@@ -284,21 +244,15 @@ namespace IdentityServerHost.Quickstart.UI
             switch (req.LoginStatus)
             {
                 case "succeeded":
-                    // Login สำเร็จ
-                    // Sign
-                    // SignalR + Tokens
-                    await _hubContext.Clients.Client(req.CId).SendAsync("ReceiveMessage", "complete", req.UId, req.BaId);
+                    await _hubContext.Clients.Client(req.CId).SendAsync("LoginStateChanged", "complete", req.UId, req.BaId);
                     break;
                 case "failed":
                 case "cancelled":
-                    // Login ไม่สำเร็จ
-                    // SignalR + ErrorMsg
-                    await _hubContext.Clients.Client(req.CId).SendAsync("ReceiveMessage", "fail", string.Empty, string.Empty);
+                    await _hubContext.Clients.Client(req.CId).SendAsync("LoginStateChanged", "fail", string.Empty, string.Empty);
                     break;
                 default:
                     return BadRequest();
             }
-
             return Ok();
         }
 

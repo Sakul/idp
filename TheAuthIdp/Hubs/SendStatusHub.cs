@@ -15,11 +15,12 @@ namespace TheAuthIdp.Hubs
 
         public async Task<string> GetLoginUrl(string svcId, string flowId, string cId)
         {
-            var dataTxt = JsonSerializer.Serialize(new { cId, flowId });
+            var dataTxt = JsonSerializer.Serialize(new { svcId, cId, flowId });
             var reqBody = new StringContent(dataTxt, Encoding.UTF8, "application/json");
             var client = new HttpClient();
-            var url = $"http://mana-facing-devtesting.azurewebsites.net/auth/{svcId}/login";
+            var url = $"https://mana-facing-devtesting.azurewebsites.net/auth/login";
             var content = await client.PostAsync(url, reqBody);
+            var rspTxtx = await content.Content.ReadAsStringAsync();
 
             var qrLink = string.Empty;
             if (content.IsSuccessStatusCode)

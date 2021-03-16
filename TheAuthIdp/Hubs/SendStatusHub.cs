@@ -18,7 +18,7 @@ namespace TheAuthIdp.Hubs
             var dataTxt = JsonSerializer.Serialize(new { cId, flowId });
             var reqBody = new StringContent(dataTxt, Encoding.UTF8, "application/json");
             var client = new HttpClient();
-            var url = $"http://mana-facing-devtesting.azurewebsites.net/auth3rd/{svcId}/login";
+            var url = $"http://mana-facing-devtesting.azurewebsites.net/auth/{svcId}/login";
             var content = await client.PostAsync(url, reqBody);
 
             var qrLink = string.Empty;

@@ -69,10 +69,12 @@ namespace IdentityServerHost.Quickstart.UI
         [HttpGet]
         public async Task<IActionResult> Login(string returnUrl)
         {
-            HttpContext.Request.Query.TryGetValue("svcid", out StringValues svcId);
-            HttpContext.Request.Query.TryGetValue("flowid", out StringValues flowId);
+            // check if we are in the context of an authorization request
+            var context = await _interaction.GetAuthorizationContextAsync(returnUrl);
+            var svcId = context.Parameters["svid"];
+            var loginId = context.Parameters["loginid"];
             ViewBag.SvcId = svcId;
-            ViewBag.FlowId = flowId;
+            ViewBag.FlowId = loginId;
 
             // build a model so we know what to show on the login page
             var vm = await BuildLoginViewModelAsync(returnUrl);

@@ -55,6 +55,10 @@ connection.start().then(function () {
                     else {
                         $("#login-session-success").prop("hidden", false);
                         $("#qr1").prop("src", url);
+
+                        if ((/Mobi|Android/i.test(navigator.userAgent)) || /Mobi|iPad|iPhone|iPod/i.test(navigator.userAgent)) {
+                            $("#applink").prop("hidden", false);
+                        }
                     }
                 }).catch(function (err) {
                     console.error(err.toString());
@@ -65,7 +69,6 @@ connection.start().then(function () {
             //$("#qr1").prop("src", qrGeneratorUrl + shortBaseUrl + '%2F' + endpointParams);
 
             if ((/Mobi|Android/i.test(navigator.userAgent)) || /Mobi|iPad|iPhone|iPod/i.test(navigator.userAgent)) {
-                $("#applink").prop("hidden", false);
                 $("#universalUri").click(function () {
                     var app = {
                         launchApp: function () {

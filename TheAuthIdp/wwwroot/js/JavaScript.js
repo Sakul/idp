@@ -30,7 +30,7 @@ connection.start().then(function () {
     connection.invoke('getConnectionId')
         .then(function (connectionId) {
             $("#signalRconnectionId").attr("value", connectionId);
-            var appstorelink = "https://apps.apple.com/th/app/mana/id1273112680";
+            var appstorelink = "itms://apps.apple.com/th/app/mana/id1273112680";
             var playstore_deeplink = "market://details?id=thes.mana.client";
             var playstorelink = "https://play.google.com/store/apps/details?id=thes.mana.client";
             var qrGeneratorUrl = "https://mana-facing-devtesting.azurewebsites.net/qr?t=";

@@ -73,24 +73,16 @@ connection.start()
     });
 
 connection.on("LoginStateChanged", function (message, uid, baid) {
-    var msg = message.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-    uid = uid.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-    baid = baid.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-    var encodedMsg = msg;
+
     $("#baid").prop("value", baid);
     $("#usernameid").prop("value", uid);
-    var li = document.createElement("li");
-    li.textContent = encodedMsg;
-    if (encodedMsg != null) {
-        var validate = (encodedMsg == "complete")
+
+    if (message != null) {
+        var validate = (message == "complete")
         if (validate) {
             document.getElementById("complete").click();
         } else {
             document.getElementById("fail").click();
         }
-    }
-    else {
-        alert("Something wrong. ");
-        console.log("fail");
     }
 });

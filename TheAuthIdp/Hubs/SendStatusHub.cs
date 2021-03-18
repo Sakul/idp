@@ -13,29 +13,31 @@ namespace TheAuthIdp.Hubs
             return Context.ConnectionId;
         }
 
-        public async Task<string> GetLoginUrl(string svcId, string flowId, string cId)
+        public async Task<LoginSessionResponse> GetLoginUrl(string svcId, string flowId, string cId)
         {
             var dataTxt = JsonSerializer.Serialize(new { svcId, cId, flowId });
             var reqBody = new StringContent(dataTxt, Encoding.UTF8, "application/json");
             var client = new HttpClient();
-            var url = $"https://mana-facing-devtesting.azurewebsites.net/auth/login";
+            var url = $"http://xapimana-deva.onmana.space/auth/login";
             var content = await client.PostAsync(url, reqBody);
-            var rspTxtx = await content.Content.ReadAsStringAsync();
 
-            var qrLink = string.Empty;
-            if (content.IsSuccessStatusCode)
+            if (false == content.IsSuccessStatusCode)
             {
-                var rspTxt = await content.Content.ReadAsStringAsync();
-                var rsp = JsonSerializer.Deserialize<LoginSessionResponse>(rspTxt);
-                qrLink = rsp.url;
+                return null;
             }
 
-            return qrLink;
+            var rspTxt = await content.Content.ReadAsStringAsync();
+            var rsp = JsonSerializer.Deserialize<LoginSessionResponse>(rspTxt, new JsonSerializerOptions
+            {
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+            });
+            return rsp;
         }
     }
 
     public class LoginSessionResponse
     {
-        public string url { get; set; }
+        public string QrUrl { get; set; }
+        public string LinkUrl { get; set; }
     }
 }

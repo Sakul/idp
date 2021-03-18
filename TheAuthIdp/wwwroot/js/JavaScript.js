@@ -15,7 +15,6 @@ connection.start()
                 connection
                     .invoke("GetLoginUrl", svcId, flowId, connectionId)
                     .then(function (rsp) {
-
                         // Setup display
                         $("#login-session-heading").prop("hidden", false);
                         if (rsp === null) {
@@ -23,7 +22,7 @@ connection.start()
                         }
                         else {
                             $("#login-session-success").prop("hidden", false);
-                            $("#qr1").prop("src", rsp.QrUrl);
+                            $("#qr1").prop("src", rsp.qrUrl);
 
                             if ((/Mobi|Android/i.test(navigator.userAgent)) || /Mobi|iPad|iPhone|iPod/i.test(navigator.userAgent)) {
                                 $("#applink").prop("hidden", false);
@@ -38,7 +37,7 @@ connection.start()
                             $("#universalUri").click(function () {
                                 var app = {
                                     launchApp: function () {
-                                        window.location.href = rsp.LinkUrl;
+                                        window.location.href = rsp.linkUrl;
                                         setTimeout(this.openWebApp, 1000);
                                     },
 

@@ -18,7 +18,7 @@ namespace TheAuthIdp.Hubs
             var dataTxt = JsonSerializer.Serialize(new { svcId, cId, flowId });
             var reqBody = new StringContent(dataTxt, Encoding.UTF8, "application/json");
             var client = new HttpClient();
-            var url = $"http://xapimana-deva.onmana.space/auth/login";
+            var url = $"https://xapimana-deva.onmana.space/auth/login";
             var content = await client.PostAsync(url, reqBody);
 
             if (false == content.IsSuccessStatusCode)

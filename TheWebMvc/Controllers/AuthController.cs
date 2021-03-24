@@ -31,8 +31,9 @@ namespace TheWebMvc.Controllers
             else
             {
                 var ref_id = User?.Claims?.Where(it => it.Type == "refid")?.FirstOrDefault()?.Value ?? null;
+                var ba_id = User?.Claims?.Where(it => it.Type == "baid")?.FirstOrDefault()?.Value ?? null;
                 var qs = new Dictionary<string, string>();
-                if (!string.IsNullOrWhiteSpace(ref_id))
+                if (!string.IsNullOrWhiteSpace(ref_id) && !string.IsNullOrWhiteSpace(ba_id))
                 {
                     // Get parameters to send back to the callback
                     qs = new Dictionary<string, string>
@@ -40,7 +41,8 @@ namespace TheWebMvc.Controllers
                             { "status", "success" },
                             { "access_token", auth.Properties.GetTokenValue("access_token") },
                             { "refresh_token", auth.Properties.GetTokenValue("refresh_token") ?? string.Empty },
-                            { "ref_id", User?.Claims?.Where(it => it.Type == "refid")?.FirstOrDefault()?.Value ?? ""}
+                            { "ref_id", User?.Claims?.Where(it => it.Type == "refid")?.FirstOrDefault()?.Value ?? ""},
+                            { "ba_id", User?.Claims?.Where(it=>it.Type=="baid")?.FirstOrDefault()?.Value ?? "" }
                         };
                 }
                 else

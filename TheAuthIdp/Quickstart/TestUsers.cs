@@ -29,7 +29,7 @@ namespace IdentityServerHost.Quickstart.UI
                 {
                     new TestUser
                     {
-                        SubjectId = "818727",
+                        SubjectId = "60473c9030a02e449cf2d93d",
                         Username = "alice",
                         Password = "alice",
                         Claims =
@@ -42,6 +42,7 @@ namespace IdentityServerHost.Quickstart.UI
                             new Claim(JwtClaimTypes.WebSite, "http://alice.com"),
                             new Claim(JwtClaimTypes.Address, JsonSerializer.Serialize(address), IdentityServerConstants.ClaimValueTypes.Json),
                             new Claim("refid", "ref200"),
+                            new Claim("baid", "637509539383978876"),
                         }
                     },
                     new TestUser

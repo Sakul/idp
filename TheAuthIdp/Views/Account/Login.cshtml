@@ -129,24 +129,11 @@
             <div class="card-body" id="buttonaera">
                 <form asp-route="Login">
                     <input type="hidden" asp-for="ReturnUrl" />
-                    <button class="btn btn-success" name="button" value="login" id="complete">Completed</button>
-                    <button class="btn btn-danger" name="button" value="cancel" id="fail">Fail</button>
                     <input id="baid" type="hidden" asp-for="BizAccountId" />
                     <input id="usernameid" type="hidden" asp-for="Username" />
+                    <button class="btn btn-success" name="button" value="login" id="complete">Completed</button>
+                    <button class="btn btn-danger" name="button" value="cancel" id="fail">Fail</button>
                 </form>
-                @*<form action="SignInComplete" method="post">
-            <input id="baid" type="hidden" asp-for="BizAccountId" />
-            <input id="usernameid" type="hidden" asp-for="Username" />
-            <input type="hidden" asp-for="ReturnUrl" />
-            <button class="btn btn-success" name="button" type="submit" value="login" id="complete">Completed</button>
-        </form>
-        <form action="DenySignIn" method="post">
-            <input type="hidden" asp-for="ReturnUrl" />
-            <button class="btn btn-danger" name="button" type="submit" value="cancel" id="fail">Fail</button>
-
-            <button class="btn btn-primary" name="button" value="login">Login</button>
-            <button class="btn btn-secondary" name="button" value="cancel">Cancel</button>
-        </form>*@
             </div>
         </div>
     </div>

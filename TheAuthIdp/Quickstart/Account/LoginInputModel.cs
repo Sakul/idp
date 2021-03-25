@@ -10,7 +10,7 @@ namespace IdentityServerHost.Quickstart.UI
     {
         [Required]
         public string Username { get; set; }
-        [Required]
+        //[Required]
         public string Password { get; set; }
         [Required]
         public string BizAccountId { get; set; }

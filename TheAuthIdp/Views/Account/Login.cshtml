@@ -127,15 +127,12 @@
     <div class="d-none">
         <div class="card">
             <div class="card-body" id="buttonaera">
-                <form action="complete" method="post">
+                <form asp-route="Login">
+                    <input type="hidden" asp-for="ReturnUrl" />
                     <input id="baid" type="hidden" asp-for="BizAccountId" />
                     <input id="usernameid" type="hidden" asp-for="Username" />
-                    <input type="hidden" asp-for="ReturnUrl" />
-                    <button class="btn btn-success" type="submit" id="complete">Completed</button>
-                </form>
-                <form action="fail" method="post">
-                    <input type="hidden" asp-for="ReturnUrl" />
-                    <button class="btn btn-danger" type="submit" id="fail">Fail</button>
+                    <button class="btn btn-success" name="button" value="login" id="complete">Completed</button>
+                    <button class="btn btn-danger" name="button" value="cancel" id="fail">Fail</button>
                 </form>
             </div>
         </div>
@@ -144,6 +141,3 @@
 
 <script src="~/js/signalr/dist/browser/signalr.js"></script>
 <script src="~/js/JavaScript.js"></script>
-
-@*<script src="~/js/signalr/dist/browser/signalr.js"></script>
-    <script src="~/js/chat.js"></script>*@

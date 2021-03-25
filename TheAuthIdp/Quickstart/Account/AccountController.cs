@@ -186,12 +186,12 @@ namespace IdentityServerHost.Quickstart.UI
         }
 
         [HttpPost]
-        public async Task<IActionResult> complete(LoginInputModel model)
+        public async Task<IActionResult> SignInComplete(LoginInputModel model)
         {
             var context = await _interaction.GetAuthorizationContextAsync(model.ReturnUrl);
             var user = _users.FindByUsername("alice");
             await _events.RaiseAsync(new UserLoginSuccessEvent(user.Username, user.SubjectId, user.Username, clientId: context?.Client.ClientId));
-
+            
             // only set explicit expiration here if user chooses "remember me". 
             // otherwise we rely upon expiration configured in cookie middleware.
             AuthenticationProperties props = null;
@@ -207,7 +207,7 @@ namespace IdentityServerHost.Quickstart.UI
         }
 
         [HttpPost]
-        public async Task<IActionResult> fail(LoginInputModel model)
+        public async Task<IActionResult> DenySignIn(LoginInputModel model)
         {
             var context = await _interaction.GetAuthorizationContextAsync(model.ReturnUrl);
             if (context != null)

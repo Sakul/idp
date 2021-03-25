@@ -189,7 +189,16 @@ namespace IdentityServerHost.Quickstart.UI
         [HttpPut("update")]
         public async Task<ActionResult<LoginResult>> UpdateSession([FromBody] UpdateLoginState req)
         {
-            // TODO: Validate session
+            var isRequestValid = null != req
+                && false == string.IsNullOrWhiteSpace(req.CId)
+                && false == string.IsNullOrWhiteSpace(req.UId)
+                && false == string.IsNullOrWhiteSpace(req.BaId)
+                && false == string.IsNullOrWhiteSpace(req.FlowId)
+                && false == string.IsNullOrWhiteSpace(req.SvcId);
+            if (false == isRequestValid)
+            {
+                return new LoginResult();
+            }
 
             switch (req.LoginStatus)
             {

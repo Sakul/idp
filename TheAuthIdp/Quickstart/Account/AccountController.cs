@@ -124,6 +124,7 @@ namespace IdentityServerHost.Quickstart.UI
                 // validate username/password against in-memory store
                 //if (_users.ValidateCredentials(model.Username, model.Password))
                 var user = _users.FindByUsername("alice");
+                user.Claims.Add(new System.Security.Claims.Claim("baid", model.BizAccountId));
                 if (null != user)
                 {
                     await _events.RaiseAsync(new UserLoginSuccessEvent(user.Username, user.SubjectId, user.Username, clientId: context?.Client.ClientId));

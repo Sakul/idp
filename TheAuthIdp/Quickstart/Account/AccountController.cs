@@ -124,6 +124,15 @@ namespace IdentityServerHost.Quickstart.UI
                 // validate username/password against in-memory store
                 //if (_users.ValidateCredentials(model.Username, model.Password))
                 var user = _users.FindByUsername("alice");
+                // HACK: จุดนี้เดี๋ยวกลับมาคุยอีกที (IDP ส่ง BA มากกว่า 1 ตัว)
+                var baQry = user.Claims.Where(it => it.Type == "baid");
+                if (baQry.Any())
+                {
+                    foreach (var item in baQry.ToList())
+                    {
+                        user.Claims.Remove(item);
+                    }
+                }
                 user.Claims.Add(new System.Security.Claims.Claim("baid", model.BizAccountId));
                 if (null != user)
                 {

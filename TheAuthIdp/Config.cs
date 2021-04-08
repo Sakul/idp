@@ -15,7 +15,7 @@ namespace TheAuthIdp
             {
                 new IdentityResources.OpenId(),
                 new IdentityResources.Profile(),
-                new IdentityResource("mana3rd", new[] { "refid", "baid" }),
+                new IdentityResource("mana3rd", new[] { "refid", "baid", "displayname", "profileimageurl", "bahassubscribed", "loginas" }),
             };
 
         public static IEnumerable<ApiScope> ApiScopes =>

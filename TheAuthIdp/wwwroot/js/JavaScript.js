@@ -69,17 +69,18 @@ connection.start()
         return console.error(e.toString());
     });
 
-connection.on("LoginStateChanged", function (message, uid, baid) {
-
-    $("#baid").prop("value", baid);
-    $("#usernameid").prop("value", uid);
-
-    if (message != null) {
-        var validate = (message == "complete")
-        if (validate) {
-            document.getElementById("complete").click();
-        } else {
-            document.getElementById("fail").click();
-        }
+connection.on("LoginStateChanged", function (result) {
+    if (result === null || result.isAgree == false) {
+        document.getElementById("fail").click();
+    }
+    else {
+        $("#BaId").prop("value", result.baId);
+        $("#UId").prop("value", result.uId);
+        $("#DisplayName").prop("value", result.displayName);
+        $("#ProfileImageUrl").prop("value", result.profileImageUrl);
+        $("#BaHasSubscribed").prop("value", result.baHasSubscribed);
+        $("#RefId").prop("value", result.refId);
+        $("#LoginAs").prop("value", result.loginAs);
+        document.getElementById("complete").click();
     }
 });

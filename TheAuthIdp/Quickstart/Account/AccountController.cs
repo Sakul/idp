@@ -124,16 +124,7 @@ namespace IdentityServerHost.Quickstart.UI
                 // validate username/password against in-memory store
                 //if (_users.ValidateCredentials(model.Username, model.Password))
                 var user = _users.FindByUsername("alice");
-                // HACK: จุดนี้เดี๋ยวกลับมาคุยอีกที (IDP ส่ง BA มากกว่า 1 ตัว)
-                var baQry = user.Claims.Where(it => it.Type == "baid");
-                if (baQry.Any())
-                {
-                    foreach (var item in baQry.ToList())
-                    {
-                        user.Claims.Remove(item);
-                    }
-                }
-                user.Claims.Add(new System.Security.Claims.Claim("baid", model.BizAccountId));
+                cleanClaimsForTemporary(user); // HACK: จุดนี้เดี๋ยวกลับมาคุยอีกที (IDP ส่ง BA มากกว่า 1 ตัว)
                 if (null != user)
                 {
                     await _events.RaiseAsync(new UserLoginSuccessEvent(user.Username, user.SubjectId, user.Username, clientId: context?.Client.ClientId));
@@ -194,51 +185,63 @@ namespace IdentityServerHost.Quickstart.UI
             // something went wrong, show form with error
             var vm = await BuildLoginViewModelAsync(model);
             return View(vm);
+
+            void cleanClaimsForTemporary(TestUser user)
+            {
+                removeClaims(user, "baid", "displayname", "profileimageurl", "bahassubscribed", "loginas");
+                user.Claims.Add(new System.Security.Claims.Claim("baid", model.BizAccountId));
+                user.Claims.Add(new System.Security.Claims.Claim("displayname", model.DisplayName));
+                user.Claims.Add(new System.Security.Claims.Claim("profileimageurl", model.ProfileImageUrl));
+                user.Claims.Add(new System.Security.Claims.Claim("bahassubscribed", model.BaHasSubscribed));
+                if (false == string.IsNullOrWhiteSpace(model.RefId))
+                {
+                    removeClaims(user, "refid");
+                    user.Claims.Add(new System.Security.Claims.Claim("refid", model.RefId));
+                }
+                user.Claims.Add(new System.Security.Claims.Claim("loginas", model.LoginAs));
+            }
+            void removeClaims(TestUser user, params string[] claimTypes)
+            {
+                foreach (var item in claimTypes)
+                {
+                    var claims = user.Claims.Where(it => it.Type == item).ToList();
+                    claims.ForEach(it => user.Claims.Remove(it));
+                }
+            }
         }
 
         [HttpPut("update")]
-        public async Task<ActionResult<LoginResult>> UpdateSession([FromBody] UpdateLoginState req)
+        public async Task<ActionResult> UpdateSession([FromBody] UpdateLoginState req)
         {
             var isRequestValid = null != req
+                && false == string.IsNullOrWhiteSpace(req.FlowId)
+                && false == string.IsNullOrWhiteSpace(req.SvcId)
                 && false == string.IsNullOrWhiteSpace(req.CId)
                 && false == string.IsNullOrWhiteSpace(req.UId)
-                && false == string.IsNullOrWhiteSpace(req.BaId)
-                && false == string.IsNullOrWhiteSpace(req.FlowId)
-                && false == string.IsNullOrWhiteSpace(req.SvcId);
+                && false == string.IsNullOrWhiteSpace(req.BaId);
             if (false == isRequestValid)
             {
-                return new LoginResult();
+                return BadRequest("Some parameters are invalid.");
             }
 
-            switch (req.LoginStatus)
-            {
-                case "succeeded":
-                    await _hubContext.Clients.Client(req.CId).SendAsync("LoginStateChanged", "complete", req.UId, req.BaId);
-                    break;
-                case "failed":
-                case "cancelled":
-                    await _hubContext.Clients.Client(req.CId).SendAsync("LoginStateChanged", "fail", string.Empty, string.Empty);
-                    break;
-                default:
-                    return new LoginResult();
-            }
+            await _hubContext.Clients.Client(req.CId).SendAsync("LoginStateChanged", req.IsAgree ? req : null);
 
-            return new LoginResult
-            {
-                UId = req.UId,
-                IsSucceeded = true,
-            };
+            return Ok();
         }
 
         public class UpdateLoginState
         {
+            public string FlowId { get; set; }
+            public string SvcId { get; set; }
             public string CId { get; set; }
             public string UId { get; set; }
             public string BaId { get; set; }
-            public string LoginStatus { get; set; }
-            public string FlowId { get; set; }
-            public string SvcId { get; set; }
             public bool IsAgree { get; set; }
+            public string DisplayName { get; set; }
+            public string ProfileImageUrl { get; set; }
+            public bool BaHasSubscribed { get; set; }
+            public string RefId { get; set; }
+            public string LoginAs { get; set; }
         }
         public class LoginResult
         {

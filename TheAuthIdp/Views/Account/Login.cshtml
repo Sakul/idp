@@ -135,8 +135,13 @@
             <div class="card-body" id="buttonaera">
                 <form asp-route="Login">
                     <input type="hidden" asp-for="ReturnUrl" />
-                    <input id="baid" type="hidden" asp-for="BizAccountId" />
-                    <input id="usernameid" type="hidden" asp-for="Username" />
+                    <input type="hidden" id="BaId" asp-for="BizAccountId" />
+                    <input type="hidden" id="UId" asp-for="Username" />
+                    <input type="hidden" id="DisplayName" asp-for="DisplayName" />
+                    <input type="hidden" id="ProfileImageUrl" asp-for="ProfileImageUrl" />
+                    <input type="hidden" id="BaHasSubscribed" asp-for="BaHasSubscribed" />
+                    <input type="hidden" id="RefId" asp-for="RefId" />
+                    <input type="hidden" id="LoginAs" asp-for="LoginAs" />
                     <button class="btn btn-success" name="button" value="login" id="complete">Completed</button>
                     <button class="btn btn-danger" name="button" value="cancel" id="fail">Fail</button>
                 </form>

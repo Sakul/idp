@@ -14,6 +14,11 @@ namespace IdentityServerHost.Quickstart.UI
         //public string Password { get; set; }
         [Required]
         public string BizAccountId { get; set; }
+        public string DisplayName { get; set; }
+        public string ProfileImageUrl { get; set; }
+        public string BaHasSubscribed { get; set; }
+        public string RefId { get; set; }
+        public string LoginAs { get; set; }
         public bool RememberLogin { get; set; }
         public string ReturnUrl { get; set; }
     }

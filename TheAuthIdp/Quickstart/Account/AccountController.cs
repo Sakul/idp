@@ -188,10 +188,10 @@ namespace IdentityServerHost.Quickstart.UI
 
             void cleanClaimsForTemporary(TestUser user)
             {
-                removeClaims(user, "baid", "displayname", "profileimageurl", "bahassubscribed", "loginas");
+                removeClaims(user, "baid", "nickname", "picture", "bahassubscribed", "loginas");
                 user.Claims.Add(new System.Security.Claims.Claim("baid", model.BizAccountId));
-                user.Claims.Add(new System.Security.Claims.Claim("displayname", model.DisplayName));
-                user.Claims.Add(new System.Security.Claims.Claim("profileimageurl", model.ProfileImageUrl));
+                user.Claims.Add(new System.Security.Claims.Claim("nickname", model.DisplayName));
+                user.Claims.Add(new System.Security.Claims.Claim("picture", model.ProfileImageUrl));
                 user.Claims.Add(new System.Security.Claims.Claim("bahassubscribed", model.BaHasSubscribed));
                 if (false == string.IsNullOrWhiteSpace(model.RefId))
                 {

@@ -43,8 +43,8 @@ namespace TheWebMvc.Controllers
                             { "refresh_token", auth.Properties.GetTokenValue("refresh_token") ?? string.Empty },
                             { "ref_id", User?.Claims?.Where(it => it.Type == "refid")?.FirstOrDefault()?.Value ?? ""},
                             { "ba_id", User?.Claims?.Where(it=>it.Type=="baid")?.FirstOrDefault()?.Value ?? "" },
-                            { "display_name", User?.Claims?.Where(it=>it.Type=="displayname")?.FirstOrDefault()?.Value ?? "" },
-                            { "profile_image_url", User?.Claims?.Where(it=>it.Type=="profileimageurl")?.FirstOrDefault()?.Value ?? "" },
+                            { "nickname", User?.Claims?.Where(it=>it.Type=="nickname")?.FirstOrDefault()?.Value ?? "" },
+                            { "picture", User?.Claims?.Where(it=>it.Type=="picture")?.FirstOrDefault()?.Value ?? "" },
                             { "ba_has_subscribed", User?.Claims?.Where(it=>it.Type=="bahassubscribed")?.FirstOrDefault()?.Value ?? "" },
                             { "login_as", User?.Claims?.Where(it=>it.Type=="loginas")?.FirstOrDefault()?.Value ?? "" },
                         };

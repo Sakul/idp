@@ -75,6 +75,7 @@ namespace TheAuthIdp
                         "http://localhost:5000/signin-oidc",
                         "https://localhost:5001/signin-oidc",
                         "https://sandboxapim-devmaster.onmana.space/signin-oidc",
+                        "https://sandboxapim-sandbox.onmana.space/signin-oidc",
                     },
 
                     // where to redirect to after logout
@@ -87,6 +88,7 @@ namespace TheAuthIdp
                         "http://localhost:5000/signout-callback-oidc",
                         "https://localhost:5001/signout-callback-oidc",
                         "https://sandboxapim-devmaster.onmana.space/signout-callback-oidc",
+                        "https://sandboxapim-sandbox.onmana.space/signout-callback-oidc",
                     },
 
                     AllowOfflineAccess = true,

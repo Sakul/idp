@@ -224,7 +224,7 @@ namespace IdentityServerHost.Quickstart.UI
                 return BadRequest("Some parameters are invalid.");
             }
 
-            await _hubContext.Clients.Client(req.CId).SendAsync("LoginStateChanged", req.IsAgree ? req : null);
+            await _hubContext.Clients.Client(req.CId).SendAsync("LoginStateChanged", req.IsAgree, req.IsAgree ? req : null);
 
             return Ok();
         }

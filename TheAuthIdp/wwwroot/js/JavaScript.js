@@ -69,11 +69,8 @@ connection.start()
         return console.error(e.toString());
     });
 
-connection.on("LoginStateChanged", function (result) {
-    if (result === null || result.isAgree == false) {
-        document.getElementById("fail").click();
-    }
-    else {
+connection.on("LoginStateChanged", function (isAgree, result) {
+    if (isAgree) {
         $("#BaId").prop("value", result.baId);
         $("#UId").prop("value", result.uId);
         $("#DisplayName").prop("value", result.displayName);
@@ -82,5 +79,8 @@ connection.on("LoginStateChanged", function (result) {
         $("#RefId").prop("value", result.refId);
         $("#LoginAs").prop("value", result.loginAs);
         document.getElementById("complete").click();
+    }
+    else {
+        document.getElementById("fail").click();
     }
 });

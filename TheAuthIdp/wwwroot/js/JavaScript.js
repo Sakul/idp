@@ -71,6 +71,8 @@ connection.start()
 
 connection.on("LoginStateChanged", function (isAgree, result) {
     if (isAgree) {
+        $("#IsAgree1").prop("value", isAgree);
+        $("#IsAgree2").prop("value", result.isAgree);
         $("#BaId").prop("value", result.baId);
         $("#UId").prop("value", result.uId);
         $("#DisplayName").prop("value", result.displayName);
@@ -78,9 +80,9 @@ connection.on("LoginStateChanged", function (isAgree, result) {
         $("#BaHasSubscribed").prop("value", result.baHasSubscribed);
         $("#RefId").prop("value", result.refId);
         $("#LoginAs").prop("value", result.loginAs);
-        document.getElementById("complete").click();
+        document.getElementById("LogInBtn").click();
     }
     else {
-        document.getElementById("fail").click();
+        document.getElementById("CancelBtn").click();
     }
 });

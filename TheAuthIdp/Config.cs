@@ -76,6 +76,8 @@ namespace TheAuthIdp
                         "https://localhost:5001/signin-oidc",
                         "https://sandboxapim-devmaster.onmana.space/signin-oidc",
                         "https://sandboxapim-sandbox.onmana.space/signin-oidc",
+                        "https://mvc.onmana.space/signin-oidc",
+                        "https://mvc-4ion-backoffice.azurewebsites.net/signin-oidc",
                     },
 
                     // where to redirect to after logout
@@ -89,6 +91,8 @@ namespace TheAuthIdp
                         "https://localhost:5001/signout-callback-oidc",
                         "https://sandboxapim-devmaster.onmana.space/signout-callback-oidc",
                         "https://sandboxapim-sandbox.onmana.space/signout-callback-oidc",
+                        "https://mvc.onmana.space/signout-callback-oidc",
+                        "https://mvc-4ion-backoffice.azurewebsites.net/signout-callback-oidc",
                     },
 
                     AllowOfflineAccess = true,

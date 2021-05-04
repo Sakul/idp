@@ -210,45 +210,6 @@ namespace IdentityServerHost.Quickstart.UI
             }
         }
 
-        [HttpPut("update")]
-        public async Task<ActionResult> UpdateSession([FromBody] UpdateLoginState req)
-        {
-            var isRequestValid = null != req
-                && false == string.IsNullOrWhiteSpace(req.FlowId)
-                && false == string.IsNullOrWhiteSpace(req.SvcId)
-                && false == string.IsNullOrWhiteSpace(req.CId)
-                && false == string.IsNullOrWhiteSpace(req.UId)
-                && false == string.IsNullOrWhiteSpace(req.BaId);
-            if (false == isRequestValid)
-            {
-                return BadRequest("Some parameters are invalid.");
-            }
-
-            await _hubContext.Clients.Client(req.CId).SendAsync("LoginStateChanged", req.IsAgree, req.IsAgree ? req : null);
-
-            return Ok();
-        }
-
-        public class UpdateLoginState
-        {
-            public string FlowId { get; set; }
-            public string SvcId { get; set; }
-            public string CId { get; set; }
-            public string UId { get; set; }
-            public string BaId { get; set; }
-            public bool IsAgree { get; set; }
-            public string DisplayName { get; set; }
-            public string ProfileImageUrl { get; set; }
-            public bool BaHasSubscribed { get; set; }
-            public string RefId { get; set; }
-            public string LoginAs { get; set; }
-        }
-        public class LoginResult
-        {
-            public string UId { get; set; }
-            public bool IsSucceeded { get; set; }
-        }
-
         /// <summary>
         /// Show logout page
         /// </summary>
